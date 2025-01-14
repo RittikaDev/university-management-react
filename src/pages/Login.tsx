@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { useLoginMutation } from "../redux/features/auth/authApi";
 import { setUser } from "../redux/features/auth/authSlice";
 import { verifyToken } from "../utils/verifyToken";
-import { useAppDispatch } from "../redux/features/hooks";
+import { useAppDispatch } from "../redux/hooks";
 
 const Login = () => {
 	const dispatch = useAppDispatch();
@@ -14,9 +14,9 @@ const Login = () => {
 		},
 	});
 
-	const [login, { error }] = useLoginMutation();
+	const [login] = useLoginMutation();
 
-	const onSubmit = async (data) => {
+	const onSubmit = async (data: { userId: string; password: string }) => {
 		const userInfo = {
 			id: data.userId,
 			password: data.password,
@@ -29,6 +29,8 @@ const Login = () => {
 	};
 
 	return (
+		// handleSubmit IS A FUNCTION PROVIDED BY REACT-HOOK-FORM. IT WRAPS YOUR onSubmit FUNCTION AND ENSURES THE FORM'S VALIDATION RULES ARE APPLIED BEFORE onSubmit IS EXECUTED.
+		// WRITING onSubmit (WITHOUT PARENTHESES) PASSES THE FUNCTION REFERENCE TO handleSubmit
 		<form onSubmit={handleSubmit(onSubmit)}>
 			<div>
 				<label htmlFor="id">ID: </label>
