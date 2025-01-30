@@ -1,3 +1,4 @@
+import { Form } from "antd";
 import { ReactNode } from "react";
 import {
 	FieldValues,
@@ -31,6 +32,11 @@ const PHForm = ({
 
 	const methods = useForm(formConfig);
 
+	const submit: SubmitHandler<FieldValues> = (data) => {
+		onSubmit(data);
+		methods.reset();
+	};
+
 	return (
 		/*
 		 * TO PROVIDE A GENERIC AND REUSABLE FORM COMPONENT.
@@ -40,7 +46,9 @@ const PHForm = ({
 		 *  THIS INCLUDES FUNCTIONS LIKE REGISTER, HANDLESUBMIT, SETVALUE, GETVALUES, AND THE FORM'S STATE, SUCH AS ERRORS AND TOUCHED FIELDS.
 		 */
 		<FormProvider {...methods}>
-			<form onSubmit={methods.handleSubmit(onSubmit)}>{children}</form>
+			<Form layout="vertical" onFinish={methods.handleSubmit(submit)}>
+				{children}
+			</Form>
 		</FormProvider>
 	);
 };
